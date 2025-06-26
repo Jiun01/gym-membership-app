@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@FJStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fitnesstrackerapp.admin.controller.LogoController">
+   <children>
+      <ImageView fitHeight="352.0" fitWidth="497.0" layoutX="177.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <!--<Image url="@../../../../../../../../../Downloads/image_no_bg.png" />-->
+            <Image url="@../../../images/logo.png" />
+
+         </image>
+         <effect>
+            <Blend />
+         </effect>
+      </ImageView>
+      <Button fx:id="btn_getstarted" layoutX="327.0" layoutY="463.0" style="-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 10px 30px; -fx-border-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0.5, 0, 2);" styleClass="button-blue" stylesheets="@FJStyle.css" text="Get Started">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

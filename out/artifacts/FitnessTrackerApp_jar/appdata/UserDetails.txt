@@ -1,0 +1,61 @@
+[ {
+  "userId" : 1,
+  "email" : "teacher@gmail.com",
+  "password" : "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5",
+  "phone" : "0123456789",
+  "name" : "Teacher "
+}, {
+  "userId" : 2,
+  "email" : "terry@gmail.com",
+  "password" : "e7042ac7d09c7bc41c8cfa5749e41858f6980643bc0db1a83cc793d3e24d3f77",
+  "phone" : "0123456789",
+  "name" : "Terry"
+}, {
+  "userId" : 3,
+  "email" : "rayhan@gmail.com",
+  "password" : "821fe212c476c955a9c7fd9cecdecdc08c6ab2e2bebdac33d703bc9aa4d59a2d",
+  "phone" : "0585778735",
+  "name" : "Rayhan"
+}, {
+  "userId" : 4,
+  "email" : "nabeela@gmail.com",
+  "password" : "e7042ac7d09c7bc41c8cfa5749e41858f6980643bc0db1a83cc793d3e24d3f77",
+  "phone" : "0123456789",
+  "name" : "Nabeela Salim"
+}, {
+  "userId" : 5,
+  "email" : "nambua@gmail.com",
+  "password" : "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5",
+  "phone" : "0123456789",
+  "name" : "Nambua"
+}, {
+  "userId" : 6,
+  "email" : "rizwan@gmail.com",
+  "password" : "821fe212c476c955a9c7fd9cecdecdc08c6ab2e2bebdac33d703bc9aa4d59a2d",
+  "phone" : "0504514109",
+  "name" : "Rizwan Manegar"
+}, {
+  "userId" : 7,
+  "email" : "rehana@gmail.com",
+  "password" : "821fe212c476c955a9c7fd9cecdecdc08c6ab2e2bebdac33d703bc9aa4d59a2d",
+  "phone" : "0502274310",
+  "name" : "Rehana Rizwan "
+}, {
+  "userId" : 8,
+  "email" : "rashed@gmail.com",
+  "password" : "821fe212c476c955a9c7fd9cecdecdc08c6ab2e2bebdac33d703bc9aa4d59a2d",
+  "phone" : "0505073545",
+  "name" : "Rashed Rizwan Manegar"
+}, {
+  "userId" : 9,
+  "email" : "sham@gmail.com",
+  "password" : "e7042ac7d09c7bc41c8cfa5749e41858f6980643bc0db1a83cc793d3e24d3f77",
+  "phone" : "0123456789",
+  "name" : "Shamshul"
+}, {
+  "userId" : 10,
+  "email" : "zunain@gmail.com",
+  "password" : "821fe212c476c955a9c7fd9cecdecdc08c6ab2e2bebdac33d703bc9aa4d59a2d",
+  "phone" : "0123456789",
+  "name" : "Zunain"
+} ]

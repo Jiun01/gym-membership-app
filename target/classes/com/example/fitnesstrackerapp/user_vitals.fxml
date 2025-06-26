@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500.0" prefWidth="800.0" stylesheets="@FJStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fitnesstrackerapp.admin.formcontroller.VitalsFormController">
+   <children>
+      <Label fx:id="lbl_added" layoutX="212.0" layoutY="47.0" text="Input Your Details" underline="true">
+         <font>
+            <Font name="System Bold" size="40.0" />
+         </font>
+      </Label>
+      <GridPane layoutX="212.0" layoutY="111.0" prefHeight="268.0" prefWidth="565.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="476.6667175292969" minWidth="10.0" prefWidth="273.9999796549479" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="492.66668701171875" minWidth="10.0" prefWidth="290.66668701171875" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Age">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="2.0" text="Height" GridPane.rowIndex="1">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="33.0" prefHeight="60.0" prefWidth="270.0" text="Current Weight" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <TextField fx:id="tf_age" promptText="Enter Your Current Age" styleClass="textfield" GridPane.columnIndex="1">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="tf_height" layoutX="250.0" layoutY="31.0" promptText="Enter Your Current Height (in CM)" styleClass="textfield" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="tf_currentweight" layoutX="250.0" layoutY="99.0" promptText="Enter Your Current Weight (in KG)" styleClass="textfield" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </TextField>
+            <Label layoutX="10.0" layoutY="112.0" prefHeight="65.0" prefWidth="263.0" text="Target Weight" GridPane.rowIndex="3">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Label>
+            <TextField fx:id="tf_targetweight" layoutX="250.0" layoutY="74.0" promptText="Enter Your Target Weight (in KG)" styleClass="textfield" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </TextField>
+         </children>
+      </GridPane>
+      <Button fx:id="btn_submit" layoutX="581.0" layoutY="391.0" mnemonicParsing="false" styleClass="button-blue" text="Submit">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Button>
+      <Label fx:id="lbl_email" layoutX="480.0" layoutY="391.0" prefHeight="45.0" prefWidth="56.0" text="Label" visible="false" />
+      <Label fx:id="lbl_checker" layoutX="245.0" layoutY="454.0" prefHeight="37.0" prefWidth="418.0" style="-fx-text-fill: red; -fx-font-size: 12px; -fx-font-style: italic;">
+         <font>
+            <Font name="System Italic" size="25.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="248.0" fitWidth="405.0" layoutX="-17.0" layoutY="249.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../images/undraw_profile-data_xkr9-removebg-preview.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

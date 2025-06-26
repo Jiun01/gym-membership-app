@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@FJStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fitnesstrackerapp.admin.formcontroller.SigninFormController">
+   <children>
+      <Label layoutX="322.0" layoutY="79.0" prefHeight="111.0" prefWidth="206.0" text="Sign In" underline="true">
+         <font>
+            <Font size="45.0" />
+         </font>
+      </Label>
+      <Button fx:id="btn_create" layoutX="315.0" layoutY="396.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="194.0" styleClass="button-blue" text="Create">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Button>
+      <GridPane layoutX="44.0" layoutY="160.0" prefHeight="215.0" prefWidth="531.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="204.66666666666666" minWidth="10.0" prefWidth="191.0000203450521" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="312.3333740234375" minWidth="10.0" prefWidth="268.33331298828125" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="43.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label text="Full Name">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <TextField fx:id="tf_username" prefHeight="25.0" prefWidth="337.0" promptText="Enter Full Name (for ex: Steve Jobs)" GridPane.columnIndex="1">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="tf_phone" layoutX="145.0" layoutY="17.0" promptText="Enter Phone Number (for ex: 9876543210)" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="tf_email" layoutX="145.0" layoutY="55.0" promptText="Enter Email Address (for ex: steve.jobs@example.com)" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="tf_password" layoutX="145.0" layoutY="93.0" promptText="Enter a Password (min. 5 characters)" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="tf_confirm_password" layoutX="145.0" layoutY="131.0" promptText="Re-Enter the Password" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </TextField>
+            <Label layoutX="10.0" layoutY="14.0" text="Phone" GridPane.rowIndex="1">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="52.0" text="Email" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="90.0" text="Password" GridPane.rowIndex="3">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="128.0" text="ConfirmPassword" GridPane.rowIndex="4">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
+      <Label layoutX="220.0" layoutY="466.0" prefHeight="41.0" prefWidth="258.0" text="Already Have an Account?">
+         <font>
+            <Font name="System Italic" size="15.0" />
+         </font>
+      </Label>
+      <Button fx:id="btn_redirect_login" layoutX="448.0" layoutY="464.0" mnemonicParsing="false" styleClass="button-blue" text="Login Here">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Label fx:id="lbl_work" layoutX="3.0" layoutY="538.0" prefHeight="41.0" prefWidth="780.0">
+         <font>
+            <Font name="System Italic" size="15.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="226.0" fitWidth="239.0" layoutX="575.0" layoutY="303.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../images/undraw_profile-image_2hi8-removebg-preview.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="101.0" fitWidth="122.0" layoutX="350.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../images/undraw_pic-profile_nr49-removebg-preview.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

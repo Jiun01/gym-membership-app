@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="@FJStyle.css" xmlns="http://javafx.com/javafx/23.0.1" fx:id="anchorPane" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fitnesstrackerapp.admin.controller.NutritionController">
+   <children>
+      <Label fx:id="lb_nutrition" layoutX="207.0" layoutY="27.0" text="Daily Nutrition">
+         <font>
+            <Font name="System Bold" size="52.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnBreakfast" layoutX="42.0" layoutY="253.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="135.0" styleClass="button-blue" text="BREAKFAST">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Button fx:id="btnDinner" layoutX="237.0" layoutY="428.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="126.0" styleClass="button-blue" text="DINNER">
+         <font>
+            <Font size="25.0" />
+         </font></Button>
+      <StackPane fx:id="sp" layoutX="35.0" layoutY="155.0" prefHeight="104.0" prefWidth="664.0" />
+      <Button fx:id="btn_back" layoutX="308.0" layoutY="523.0" mnemonicParsing="false" prefWidth="77.0" styleClass="button-blue" text="BACK" />
+      <ImageView fitHeight="195.0" fitWidth="186.0" layoutX="597.0" layoutY="-42.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../images/undraw_healthy-options_ne00-removebg-preview.png" />
+         </image></ImageView>
+      <ImageView fitHeight="40.0" fitWidth="41.0" layoutX="8.0" layoutY="255.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="menuBreakfast" layoutX="40.0" layoutY="146.0" prefHeight="46.0" prefWidth="713.0" text="Egg and avocado toast OR Oats with protein OR Greek yogurt partfait">
+         <font>
+            <Font size="17.0" />
+         </font></Label>
+      <Label fx:id="menuDinner" layoutX="35.0" layoutY="146.0" prefHeight="46.0" prefWidth="757.0" text="Grilled salmon and sweet potato OR Chicken fajita bowl OR Turkey meatballs and zucchini">
+         <font>
+            <Font size="17.0" />
+         </font></Label>
+      <ImageView fitHeight="128.0" fitWidth="222.0" layoutX="8.0" layoutY="458.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../images/undraw_breakfast_rgx5-removebg-preview.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="308.0" fitWidth="451.0" layoutX="378.0" layoutY="218.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../images/undraw_diet_zdwe-removebg-preview.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="btnLunch" layoutX="127.0" layoutY="348.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="141.0" styleClass="button-blue" text="LUNCH">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Button>
+      <Label fx:id="menuLunch" layoutX="25.0" layoutY="144.0" prefHeight="51.0" prefWidth="757.0" text="Grilled chiken salad OR Turkey with hummus OR Beef and veggies">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
