@@ -108,6 +108,88 @@ public class DataManager {
         }
     }
 
+    public static boolean updateUserRole(String username, String newRole) {
+        List<String[]> users = loadAllUsers();
+        boolean userFound = false;
+        for (String[] user : users) {
+            if (user.length > 0 && user[0].equals(username)) {
+                user[3] = newRole; // Update the role
+                userFound = true;
+                break;
+            }
+        }
+
+        if (userFound) {
+            try (FileWriter fw = new FileWriter(USERS_FILE, false); // Overwrite the file
+                 PrintWriter pw = new PrintWriter(fw)) {
+                for (String[] user : users) {
+                    pw.println(String.join(",", user));
+                }
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            return false; // User not found
+        }
+    }
+
+    public static boolean deleteUser(String username) {
+        List<String[]> users = loadAllUsers();
+        List<String[]> updatedUsers = new ArrayList<>();
+        boolean userFound = false;
+        for (String[] user : users) {
+            if (user.length > 0 && user[0].equals(username)) {
+                userFound = true;
+            } else {
+                updatedUsers.add(user);
+            }
+        }
+
+        if (userFound) {
+            try (FileWriter fw = new FileWriter(USERS_FILE, false); // Overwrite the file
+                 PrintWriter pw = new PrintWriter(fw)) {
+                for (String[] user : updatedUsers) {
+                    pw.println(String.join(",", user));
+                }
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            return false; // User not found
+        }
+    }
+
+    public static boolean updateTicketStatus(String email, String subject, String description, String newStatus) {
+        List<String[]> tickets = loadAllTickets();
+        boolean ticketFound = false;
+        for (String[] ticket : tickets) {
+            if (ticket.length >= 4 && ticket[0].equals(email) && ticket[1].equals(subject) && ticket[2].equals(description)) {
+                ticket[3] = newStatus; // Update the status
+                ticketFound = true;
+                break;
+            }
+        }
+
+        if (ticketFound) {
+            try (FileWriter fw = new FileWriter(TICKETS_FILE, false); // Overwrite the file
+                 PrintWriter pw = new PrintWriter(fw)) {
+                for (String[] ticket : tickets) {
+                    pw.println(String.join(",", ticket));
+                }
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            return false; // Ticket not found
+        }
+    }
+
     // --- Member Data Persistence ---
 
     /**

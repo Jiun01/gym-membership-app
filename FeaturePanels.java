@@ -26,10 +26,17 @@ class ProfilePanel extends JPanel {
         add(saveButton);
 
         saveButton.addActionListener(e -> {
+            String ageText = ageField.getText();
+            try {
+                Integer.parseInt(ageText);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid number for age.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             DataManager.saveProfile(
                     username,
                     nameField.getText(),
-                    ageField.getText(),
+                    ageText,
                     genderField.getText()
             );
             JOptionPane.showMessageDialog(this, "Profile saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -45,40 +52,57 @@ class GoalsPanel extends JPanel {
         setBorder(BorderFactory.createTitledBorder("Daily & Weekly Goals"));
         setBackground(new Color(240, 240, 255));
 
-        // Daily Goals
+        // --- Data Structures ---
+        JTextField[] dailyGoalInputs = new JTextField[3];
+        JTextField[] weeklyGoalInputs = new JTextField[2];
+
+        // --- UI Panels ---
         JPanel dailyPanel = new JPanel(new GridLayout(0, 2, 10, 5));
         dailyPanel.setBorder(BorderFactory.createTitledBorder("Daily Goals"));
         dailyPanel.setBackground(Color.WHITE);
-        dailyPanel.add(new JLabel("Workout Duration (30 mins):"));
-        dailyPanel.add(new JTextField(10));
-        dailyPanel.add(new JLabel("Steps Taken (10,000):"));
-        dailyPanel.add(new JTextField(10));
-        dailyPanel.add(new JLabel("Calories Burned (400 kcal):"));
-        dailyPanel.add(new JTextField(10));
-        add(dailyPanel);
 
-        // Weekly Goals
         JPanel weeklyPanel = new JPanel(new GridLayout(0, 2, 10, 5));
         weeklyPanel.setBorder(BorderFactory.createTitledBorder("Weekly Goals"));
         weeklyPanel.setBackground(Color.WHITE);
+
+        // --- Daily Goals Fields ---
+        dailyGoalInputs[0] = new JTextField(10);
+        dailyGoalInputs[1] = new JTextField(10);
+        dailyGoalInputs[2] = new JTextField(10);
+
+        dailyPanel.add(new JLabel("Workout Duration (30 mins):"));
+        dailyPanel.add(dailyGoalInputs[0]);
+        dailyPanel.add(new JLabel("Steps Taken (10,000):"));
+        dailyPanel.add(dailyGoalInputs[1]);
+        dailyPanel.add(new JLabel("Calories Burned (400 kcal):"));
+        dailyPanel.add(dailyGoalInputs[2]);
+
+        // --- Weekly Goals Fields ---
+        weeklyGoalInputs[0] = new JTextField(10);
+        weeklyGoalInputs[1] = new JTextField(10);
+
         weeklyPanel.add(new JLabel("Consistency (4 workouts):"));
-        weeklyPanel.add(new JTextField(10));
+        weeklyPanel.add(weeklyGoalInputs[0]);
         weeklyPanel.add(new JLabel("Weekly Calories (2,500 kcal):"));
-        weeklyPanel.add(new JTextField(10));
+        weeklyPanel.add(weeklyGoalInputs[1]);
+
+        add(dailyPanel);
         add(weeklyPanel);
 
-        JTextField[] dailyGoalInputs = new JTextField[3];
-        // ... (code to create daily goal fields)
-
-        JTextField[] weeklyGoalInputs = new JTextField[2];
-        // ... (code to create weekly goal fields)
-
+        // --- Save Button ---
         JButton saveButton = new JButton("Save Progress");
         add(saveButton);
 
         saveButton.addActionListener(e -> {
-            String[] dailyData = { dailyGoalInputs[0].getText(), dailyGoalInputs[1].getText(), dailyGoalInputs[2].getText() };
-            String[] weeklyData = { weeklyGoalInputs[0].getText(), weeklyGoalInputs[1].getText() };
+            String[] dailyData = {
+                dailyGoalInputs[0].getText(),
+                dailyGoalInputs[1].getText(),
+                dailyGoalInputs[2].getText()
+            };
+            String[] weeklyData = {
+                weeklyGoalInputs[0].getText(),
+                weeklyGoalInputs[1].getText()
+            };
             DataManager.saveGoals(username, dailyData, weeklyData);
             JOptionPane.showMessageDialog(this, "Goals saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
         });
@@ -119,6 +143,16 @@ class FitnessTrackerPanel extends JPanel {
         add(new JScrollPane(recommendationArea));
 
         submitButton.addActionListener(e -> {
+            String weightText = weightField.getText();
+            String heightText = heightField.getText();
+            try {
+                Double.parseDouble(weightText);
+                Double.parseDouble(heightText);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Please enter valid numbers for weight and height.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             String goal = (String) goalComboBox.getSelectedItem();
             StringBuilder recommendations = new StringBuilder();
             if ("Lose Weight".equals(goal)) {
@@ -129,7 +163,7 @@ class FitnessTrackerPanel extends JPanel {
                 recommendations.append("Diet: High-protein (2,000-2,500 kcal/day).\n");
             } else {
                 recommendations.append("Maintain current weight.\n");
-                recommendations.append("Diet: 2,000-2,200 kcal/day.\n");
+                recommendations.append("Diet: 2,000-2,200 kcal/day).\n");
             }
             recommendationArea.setText(recommendations.toString());
         });
@@ -176,26 +210,34 @@ class CreateTicketPanel extends JPanel {
     }
 }
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 // --- PrivacyPolicyPanel.java (from GymPrivacyPolicyApp) ---
 class PrivacyPolicyPanel extends JPanel {
     public PrivacyPolicyPanel() {
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createTitledBorder("Privacy & Policy"));
-        JTextArea policyText = new JTextArea(
-                "Privacy & Policy\n\n" +
-                        "Welcome to our Gym Membership & Service App.\n" +
-                        "We are committed to protecting your personal information and your right to privacy.\n\n" +
-                        "1. What Information We Collect:\n" +
-                        "- Full name, contact details, login credentials, and workout logs.\n\n" +
-                        "2. How We Use Your Information:\n" +
-                        "- To manage your membership, track fitness performance, and improve our services.\n\n" +
-                        "3. Data Storage & Security:\n" +
-                        "- All user data is stored locally on your device in CSV files."
-        );
+        JTextArea policyText = new JTextArea(loadPrivacyPolicy());
         policyText.setWrapStyleWord(true);
         policyText.setLineWrap(true);
         policyText.setEditable(false);
         policyText.setFont(new Font("Arial", Font.PLAIN, 14));
         add(new JScrollPane(policyText), BorderLayout.CENTER);
+    }
+
+    private String loadPrivacyPolicy() {
+        StringBuilder policy = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader("privacy_policy.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                policy.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Failed to load privacy policy.";
+        }
+        return policy.toString();
     }
 }
