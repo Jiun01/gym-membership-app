@@ -241,14 +241,70 @@ public class DataManager {
      * @param weeklyGoals An array of weekly goal inputs.
      */
     public static void saveGoals(String username, String[] dailyGoals, String[] weeklyGoals) {
-        try (FileWriter fw = new FileWriter(GOALS_FILE, true);
+        List<String[]> allGoals = new ArrayList<>();
+        boolean goalsFound = false;
+
+        // Read all existing goals, excluding the one for the current username
+        try (BufferedReader br = new BufferedReader(new FileReader(GOALS_FILE))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                if (values.length > 0 && values[0].equals(username)) {
+                    goalsFound = true; // Mark that we found the goals
+                } else {
+                    allGoals.add(values);
+                }
+            }
+        } catch (IOException e) {
+            if (!(e instanceof FileNotFoundException)) {
+                e.printStackTrace();
+            }
+        }
+
+        // Add the new (or updated) goals
+        String daily = String.join(";", dailyGoals);
+        String weekly = String.join(";", weeklyGoals);
+        allGoals.add(new String[]{username, daily, weekly});
+
+        // Write all goals back to the file, overwriting it
+        try (FileWriter fw = new FileWriter(GOALS_FILE, false); // Overwrite the file
              PrintWriter pw = new PrintWriter(fw)) {
-            String daily = String.join(";", dailyGoals);
-            String weekly = String.join(";", weeklyGoals);
-            pw.println(String.join(",", username, daily, weekly));
+            for (String[] goal : allGoals) {
+                pw.println(String.join(",", goal));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String[][] loadGoals(String username) {
+        try (BufferedReader br = new BufferedReader(new FileReader(GOALS_FILE))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                if (values.length > 0 && values[0].equals(username)) {
+                    String[] loadedDaily = values[1].split(";");
+                    String[] loadedWeekly = values[2].split(";");
+
+                    String[] daily = new String[5]; // Expected 5 daily goals
+                    String[] weekly = new String[4]; // Expected 4 weekly goals
+
+                    System.arraycopy(loadedDaily, 0, daily, 0, Math.min(loadedDaily.length, daily.length));
+                    System.arraycopy(loadedWeekly, 0, weekly, 0, Math.min(loadedWeekly.length, weekly.length));
+
+                    // Fill remaining with empty strings if loaded data is shorter
+                    for (int i = loadedDaily.length; i < daily.length; i++) daily[i] = "";
+                    for (int i = loadedWeekly.length; i < weekly.length; i++) weekly[i] = "";
+
+                    return new String[][]{daily, weekly};
+                }
+            }
+        } catch (IOException e) {
+            if (!(e instanceof FileNotFoundException)) {
+                e.printStackTrace();
+            }
+        }
+        return null; // Goals not found
     }
 
     public static String[] loadProfile(String username) {

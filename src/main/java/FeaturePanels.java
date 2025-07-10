@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 // --- ProfilePanel.java (from GymProfileApp) ---
 class ProfilePanel extends JPanel {
@@ -131,38 +132,65 @@ class GoalsPanel extends JPanel {
         setBackground(new Color(240, 240, 255));
 
         // --- Data Structures ---
-        JTextField[] dailyGoalInputs = new JTextField[3];
-        JTextField[] weeklyGoalInputs = new JTextField[2];
+        JTextField[] dailyGoalTexts = new JTextField[5];
+        JCheckBox[] dailyGoalChecks = new JCheckBox[5];
+        JTextField[] weeklyGoalTexts = new JTextField[4];
+        JCheckBox[] weeklyGoalChecks = new JCheckBox[4];
+
+        // Load existing goals
+        String[][] existingGoals = DataManager.loadGoals(username);
+        String[] existingDailyData = (existingGoals != null && existingGoals.length > 0) ? existingGoals[0] : new String[5];
+        String[] existingWeeklyData = (existingGoals != null && existingGoals.length > 1) ? existingGoals[1] : new String[4];
 
         // --- UI Panels ---
-        JPanel dailyPanel = new JPanel(new GridLayout(0, 2, 10, 5));
+        JPanel dailyPanel = new JPanel(new GridLayout(0, 1, 10, 5)); // Changed to 1 column for better layout
         dailyPanel.setBorder(BorderFactory.createTitledBorder("Daily Goals"));
         dailyPanel.setBackground(Color.WHITE);
 
-        JPanel weeklyPanel = new JPanel(new GridLayout(0, 2, 10, 5));
+        JPanel weeklyPanel = new JPanel(new GridLayout(0, 1, 10, 5)); // Changed to 1 column
         weeklyPanel.setBorder(BorderFactory.createTitledBorder("Weekly Goals"));
         weeklyPanel.setBackground(Color.WHITE);
 
-        // --- Daily Goals Fields ---
-        dailyGoalInputs[0] = new JTextField(10);
-        dailyGoalInputs[1] = new JTextField(10);
-        dailyGoalInputs[2] = new JTextField(10);
+        // Helper to create a goal entry panel
+        class GoalEntryPanel extends JPanel {
+            JTextField textField;
+            JCheckBox checkBox;
 
-        dailyPanel.add(new JLabel("Workout Duration (30 mins):"));
-        dailyPanel.add(dailyGoalInputs[0]);
-        dailyPanel.add(new JLabel("Steps Taken (10,000):"));
-        dailyPanel.add(dailyGoalInputs[1]);
-        dailyPanel.add(new JLabel("Calories Burned (400 kcal):"));
-        dailyPanel.add(dailyGoalInputs[2]);
+            public GoalEntryPanel(String label, String initialText, boolean initialCheck) {
+                super(new FlowLayout(FlowLayout.LEFT));
+                textField = new JTextField(initialText, 20);
+                checkBox = new JCheckBox("Completed", initialCheck);
+                add(new JLabel(label));
+                add(textField);
+                add(checkBox);
+            }
+        }
+
+        // --- Daily Goals Fields ---
+        String[] dailyLabels = {"Workout Duration (30 mins):", "Steps Taken (10,000):", "Calories Burned (400 kcal):", "Hydration (2 liters):", "Nutrition (1,800-2,200 kcal):"};
+        for (int i = 0; i < dailyGoalTexts.length; i++) {
+            String[] parts = existingDailyData[i].split("~", 2); // Split text and boolean
+            String text = parts[0];
+            boolean checked = parts.length > 1 ? Boolean.parseBoolean(parts[1]) : false;
+            
+            GoalEntryPanel panel = new GoalEntryPanel(dailyLabels[i], text, checked);
+            dailyGoalTexts[i] = panel.textField;
+            dailyGoalChecks[i] = panel.checkBox;
+            dailyPanel.add(panel);
+        }
 
         // --- Weekly Goals Fields ---
-        weeklyGoalInputs[0] = new JTextField(10);
-        weeklyGoalInputs[1] = new JTextField(10);
+        String[] weeklyLabels = {"Consistency (4 workouts):", "Weekly Calories (2,500-3,000 kcal):", "Challenge Streak (5 days):", "Progress Tracking (Update weight/measurements):"};
+        for (int i = 0; i < weeklyGoalTexts.length; i++) {
+            String[] parts = existingWeeklyData[i].split("~", 2); // Split text and boolean
+            String text = parts[0];
+            boolean checked = parts.length > 1 ? Boolean.parseBoolean(parts[1]) : false;
 
-        weeklyPanel.add(new JLabel("Consistency (4 workouts):"));
-        weeklyPanel.add(weeklyGoalInputs[0]);
-        weeklyPanel.add(new JLabel("Weekly Calories (2,500 kcal):"));
-        weeklyPanel.add(weeklyGoalInputs[1]);
+            GoalEntryPanel panel = new GoalEntryPanel(weeklyLabels[i], text, checked);
+            weeklyGoalTexts[i] = panel.textField;
+            weeklyGoalChecks[i] = panel.checkBox;
+            weeklyPanel.add(panel);
+        }
 
         add(dailyPanel);
         add(weeklyPanel);
@@ -172,15 +200,14 @@ class GoalsPanel extends JPanel {
         add(saveButton);
 
         saveButton.addActionListener(e -> {
-            String[] dailyData = {
-                dailyGoalInputs[0].getText(),
-                dailyGoalInputs[1].getText(),
-                dailyGoalInputs[2].getText()
-            };
-            String[] weeklyData = {
-                weeklyGoalInputs[0].getText(),
-                weeklyGoalInputs[1].getText()
-            };
+            String[] dailyData = new String[dailyGoalTexts.length];
+            for (int i = 0; i < dailyGoalTexts.length; i++) {
+                dailyData[i] = dailyGoalTexts[i].getText() + "~" + dailyGoalChecks[i].isSelected();
+            }
+            String[] weeklyData = new String[weeklyGoalTexts.length];
+            for (int i = 0; i < weeklyGoalTexts.length; i++) {
+                weeklyData[i] = weeklyGoalTexts[i].getText() + "~" + weeklyGoalChecks[i].isSelected();
+            }
             DataManager.saveGoals(username, dailyData, weeklyData);
             JOptionPane.showMessageDialog(this, "Goals saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
         });
@@ -303,7 +330,7 @@ class PrivacyPolicyPanel extends JPanel {
 
     public static String loadPrivacyPolicy() {
         StringBuilder policy = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader("privacy_policy.txt"))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(PrivacyPolicyPanel.class.getResourceAsStream("/privacy_policy.txt")))) {
             String line;
             while ((line = br.readLine()) != null) {
                 policy.append(line).append("\n");

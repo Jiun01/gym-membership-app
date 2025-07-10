@@ -8,14 +8,16 @@ import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.segment.TextSegment;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import dev.langchain4j.model.ollama.OllamaEmbeddingModel;
-import dev.langchain4j.retriever.ContentRetriever;
-import dev.langchain4j.retriever.EmbeddingStoreContentRetriever;
+import dev.langchain4j.rag.content.retriever.ContentRetriever;
+import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.store.embedding.EmbeddingStore;
-import dev.langchain4j.store.embedding.InMemoryEmbeddingStore;
+import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
+
+import dev.langchain4j.rag.query.Query;
 
 import java.nio.file.Paths;
 import java.util.List;
@@ -25,13 +27,13 @@ public class Chatbot extends JPanel {
 
     private JTextArea chatArea;
     private JTextField inputField;
-    private ChatLanguageModel ollamaModel;
+    private ChatModel ollamaModel;
     private EmbeddingModel embeddingModel;
     private EmbeddingStore<TextSegment> embeddingStore;
     private ContentRetriever retriever;
 
     public Chatbot() {
-        
+        setLayout(new BorderLayout());
 
         // Set up the chat area
         chatArea = new JTextArea();
@@ -81,9 +83,14 @@ public class Chatbot extends JPanel {
             DocumentSplitter splitter = DocumentSplitters.recursive(500, 0); // Adjust chunk size and overlap as needed
             List<TextSegment> segments = splitter.split(document);
 
-            embeddingStore.add(embeddingModel.embedAll(segments).embeddings());
+            embeddingStore.addAll(embeddingModel.embedAll(segments).content(), segments);
 
-            retriever = new EmbeddingStoreContentRetriever(embeddingStore, embeddingModel);
+            retriever = EmbeddingStoreContentRetriever.builder()
+                    .embeddingStore(embeddingStore)
+                    .embeddingModel(embeddingModel)
+                    .maxResults(2) // Retrieve up to 2 most relevant results
+                    .minScore(0.7) // Minimum relevance score to consider a result
+                    .build();
 
             chatArea.append("Chatbot initialized. Type your questions!\n");
         } catch (Exception e) {
@@ -107,9 +114,9 @@ public class Chatbot extends JPanel {
             new Thread(() -> {
                 try {
                     // 1. Retrieve relevant information
-                    List<TextSegment> relevantSegments = retriever.retrieve(userMessage);
+                    List<dev.langchain4j.rag.content.Content> relevantSegments = retriever.retrieve(Query.from(userMessage));
                     String context = relevantSegments.stream()
-                            .map(TextSegment::text)
+                            .map(content -> content.textSegment().text())
                             .collect(Collectors.joining("\n\n"));
 
                     // 2. Construct a prompt with context
@@ -118,7 +125,7 @@ public class Chatbot extends JPanel {
                                     "Question: " + userMessage;
 
                     // 3. Generate response using Ollama with context
-                    String botResponse = ollamaModel.generate(prompt);
+                    String botResponse = ollamaModel.chat(prompt);
                     SwingUtilities.invokeLater(() -> chatArea.append("Bot: " + botResponse + "\n"));
                 } catch (Exception e) {
                     SwingUtilities.invokeLater(() -> chatArea.append("Bot Error: " + e.getMessage() + "\n"));
