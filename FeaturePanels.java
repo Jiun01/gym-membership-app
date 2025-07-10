@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 // --- ProfilePanel.java (from GymProfileApp) ---
 class ProfilePanel extends JPanel {
@@ -209,10 +212,6 @@ class CreateTicketPanel extends JPanel {
         });
     }
 }
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 
 // --- PrivacyPolicyPanel.java (from GymPrivacyPolicyApp) ---
 class PrivacyPolicyPanel extends JPanel {
