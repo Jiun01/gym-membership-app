@@ -200,9 +200,35 @@ public class DataManager {
      * @param gender The user's gender.
      */
     public static void saveProfile(String username, String name, String age, String gender) {
-        try (FileWriter fw = new FileWriter(PROFILES_FILE, true);
+        List<String[]> allProfiles = new ArrayList<>();
+        boolean profileFound = false;
+
+        // Read all existing profiles, excluding the one for the current username
+        try (BufferedReader br = new BufferedReader(new FileReader(PROFILES_FILE))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                if (values.length > 0 && values[0].equals(username)) {
+                    profileFound = true; // Mark that we found the profile
+                } else {
+                    allProfiles.add(values);
+                }
+            }
+        } catch (IOException e) {
+            if (!(e instanceof FileNotFoundException)) {
+                e.printStackTrace();
+            }
+        }
+
+        // Add the new (or updated) profile
+        allProfiles.add(new String[]{username, name, age, gender});
+
+        // Write all profiles back to the file, overwriting it
+        try (FileWriter fw = new FileWriter(PROFILES_FILE, false); // Overwrite the file
              PrintWriter pw = new PrintWriter(fw)) {
-            pw.println(String.join(",", username, name, age, gender));
+            for (String[] profile : allProfiles) {
+                pw.println(String.join(",", profile));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

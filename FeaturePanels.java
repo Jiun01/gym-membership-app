@@ -37,6 +37,88 @@ class ProfilePanel extends JPanel {
         add(ageLabel);
         add(genderLabel);
         add(Box.createVerticalGlue()); // Pushes content to the top
+
+        JButton fillProfileButton = new JButton("Fill/Edit Profile");
+        fillProfileButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(fillProfileButton);
+
+        fillProfileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // This will be handled by the parent container (MemberDashboard) or a CardLayout within this panel
+                // For now, we'll just show a message or switch to an input panel
+                JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(ProfilePanel.this);
+                JTabbedPane tabbedPane = (JTabbedPane) ((MemberDashboard) topFrame).getContentPane().getComponent(0);
+                tabbedPane.addTab("Edit Profile", new ProfileInputPanel(username));
+                tabbedPane.setSelectedComponent(tabbedPane.getComponentAt(tabbedPane.getTabCount() - 1));
+            }
+        });
+    }
+}
+
+class ProfileInputPanel extends JPanel {
+    public ProfileInputPanel(String username) {
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setAlignmentX(Component.CENTER_ALIGNMENT);
+        setBorder(BorderFactory.createTitledBorder("Create/Edit Your Gym Profile"));
+        setBackground(new Color(240, 240, 255));
+
+        JTextField nameField = new JTextField(20);
+        JTextField ageField = new JTextField(20);
+        JTextField genderField = new JTextField(20);
+        JButton saveButton = new JButton("Save Profile");
+
+        // Load existing profile data if available
+        String[] existingProfile = DataManager.loadProfile(username);
+        if (existingProfile != null) {
+            nameField.setText(existingProfile[1]);
+            ageField.setText(existingProfile[2]);
+            genderField.setText(existingProfile[3]);
+        }
+
+        add(new JLabel("Name:"));
+        add(nameField);
+        add(new JLabel("Age:"));
+        add(ageField);
+        add(new JLabel("Gender:"));
+        add(genderField);
+        add(Box.createVerticalStrut(10));
+        add(saveButton);
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String ageText = ageField.getText();
+                try {
+                    Integer.parseInt(ageText);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(ProfileInputPanel.this, "Please enter a valid number for age.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                DataManager.saveProfile(
+                        username,
+                        nameField.getText(),
+                        ageText,
+                        genderField.getText()
+                );
+                JOptionPane.showMessageDialog(ProfileInputPanel.this, "Profile saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                // After saving, switch back to the display panel and remove this input panel
+                JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(ProfileInputPanel.this);
+                JTabbedPane tabbedPane = (JTabbedPane) ((MemberDashboard) topFrame).getContentPane().getComponent(0);
+                int tabIndex = tabbedPane.indexOfComponent(ProfileInputPanel.this);
+                if (tabIndex != -1) {
+                    tabbedPane.removeTabAt(tabIndex);
+                }
+                // Refresh the ProfilePanel to show updated data
+                int profileTabIndex = tabbedPane.indexOfTab("My Profile");
+                if (profileTabIndex != -1) {
+                    tabbedPane.removeTabAt(profileTabIndex);
+                    tabbedPane.insertTab("My Profile", null, new ProfilePanel(username), null, profileTabIndex);
+                    tabbedPane.setSelectedComponent(tabbedPane.getComponentAt(profileTabIndex));
+                }
+            }
+        });
     }
 }
 
