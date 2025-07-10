@@ -8,42 +8,35 @@ import java.io.IOException;
 
 // --- ProfilePanel.java (from GymProfileApp) ---
 class ProfilePanel extends JPanel {
-    public ProfilePanel(String username) { // Username is now passed to the constructor
+    public ProfilePanel(String username) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setAlignmentX(Component.CENTER_ALIGNMENT);
-        setBorder(BorderFactory.createTitledBorder("Create Your Gym Profile"));
+        setBorder(BorderFactory.createTitledBorder("Your Gym Profile"));
         setBackground(new Color(240, 240, 255));
 
-        JTextField nameField = new JTextField(20);
-        JTextField ageField = new JTextField(20);
-        JTextField genderField = new JTextField(20);
-        JButton saveButton = new JButton("Save Profile");
+        // Load profile data
+        String[] profileData = DataManager.loadProfile(username);
 
-        add(new JLabel("Name:"));
-        add(nameField);
-        add(new JLabel("Age:"));
-        add(ageField);
-        add(new JLabel("Gender:"));
-        add(genderField);
-        add(Box.createVerticalStrut(10));
-        add(saveButton);
+        // Create JLabels to display profile information
+        JLabel nameLabel = new JLabel("Name: ");
+        JLabel ageLabel = new JLabel("Age: ");
+        JLabel genderLabel = new JLabel("Gender: ");
 
-        saveButton.addActionListener(e -> {
-            String ageText = ageField.getText();
-            try {
-                Integer.parseInt(ageText);
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Please enter a valid number for age.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            DataManager.saveProfile(
-                    username,
-                    nameField.getText(),
-                    ageText,
-                    genderField.getText()
-            );
-            JOptionPane.showMessageDialog(this, "Profile saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-        });
+        if (profileData != null) {
+            nameLabel.setText("Name: " + profileData[1]);
+            ageLabel.setText("Age: " + profileData[2]);
+            genderLabel.setText("Gender: " + profileData[3]);
+        } else {
+            nameLabel.setText("Name: Not set");
+            ageLabel.setText("Age: Not set");
+            genderLabel.setText("Gender: Not set");
+        }
+
+        // Add labels to the panel
+        add(nameLabel);
+        add(ageLabel);
+        add(genderLabel);
+        add(Box.createVerticalGlue()); // Pushes content to the top
     }
 }
 

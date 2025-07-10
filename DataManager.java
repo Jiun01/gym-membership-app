@@ -225,6 +225,23 @@ public class DataManager {
         }
     }
 
+    public static String[] loadProfile(String username) {
+        try (BufferedReader br = new BufferedReader(new FileReader(PROFILES_FILE))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                if (values.length > 0 && values[0].equals(username)) {
+                    return values;
+                }
+            }
+        } catch (IOException e) {
+            if (!(e instanceof FileNotFoundException)) {
+                e.printStackTrace();
+            }
+        }
+        return null; // Profile not found
+    }
+
     // --- Other Methods (isUserExists, saveTicket, loadAllUsers, loadAllTickets) ---
     // (These methods remain largely the same, but loadAllUsers needs to account for the new format)
 
