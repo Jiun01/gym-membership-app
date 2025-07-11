@@ -169,6 +169,9 @@ class GoalsPanel extends JPanel {
         // --- Daily Goals Fields ---
         String[] dailyLabels = {"Workout Duration (30 mins):", "Steps Taken (10,000):", "Calories Burned (400 kcal):", "Hydration (2 liters):", "Nutrition (1,800-2,200 kcal):"};
         for (int i = 0; i < dailyGoalTexts.length; i++) {
+            if (existingDailyData[i] == null) {
+                existingDailyData[i] = "";
+            }
             String[] parts = existingDailyData[i].split("~", 2); // Split text and boolean
             String text = parts[0];
             boolean checked = parts.length > 1 ? Boolean.parseBoolean(parts[1]) : false;
@@ -182,6 +185,9 @@ class GoalsPanel extends JPanel {
         // --- Weekly Goals Fields ---
         String[] weeklyLabels = {"Consistency (4 workouts):", "Weekly Calories (2,500-3,000 kcal):", "Challenge Streak (5 days):", "Progress Tracking (Update weight/measurements):"};
         for (int i = 0; i < weeklyGoalTexts.length; i++) {
+            if (existingWeeklyData[i] == null) {
+                existingWeeklyData[i] = "";
+            }
             String[] parts = existingWeeklyData[i].split("~", 2); // Split text and boolean
             String text = parts[0];
             boolean checked = parts.length > 1 ? Boolean.parseBoolean(parts[1]) : false;
