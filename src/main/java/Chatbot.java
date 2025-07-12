@@ -62,17 +62,11 @@ public class Chatbot extends JPanel {
         sendButton.addActionListener(sendActionListener);
         inputField.addActionListener(sendActionListener);
 
-        // Initialize Ollama and RAG components
+        // Initialize openai RAG components
         try {
-            chatModel = OpenAiChatModel.builder()
-                    .apiKey("API KEYS HERE") // Replace with your actual OpenAI API key
-                    .modelName("gpt-3.5-turbo")
-                    .build();
+            chatModel = OpenAiChatModel.builder().apiKey("API KEYS HERE").modelName("gpt-3.5-turbo").build();
 
-            embeddingModel = OpenAiEmbeddingModel.builder()
-                    .apiKey("API KEYS HERE") // Replace with your actual OpenAI API key
-                    .modelName("text-embedding-ada-002")
-                    .build();
+            embeddingModel = OpenAiEmbeddingModel.builder().apiKey("API KEYS HERE").modelName("text-embedding-ada-002").build();
 
             embeddingStore = new InMemoryEmbeddingStore<>();
 
@@ -85,16 +79,14 @@ public class Chatbot extends JPanel {
 
             embeddingStore.addAll(embeddingModel.embedAll(segments).content(), segments);
 
-            retriever = EmbeddingStoreContentRetriever.builder()
-                    .embeddingStore(embeddingStore)
-                    .embeddingModel(embeddingModel)
-                    .maxResults(2) // Retrieve up to 2 most relevant results
+            retriever = EmbeddingStoreContentRetriever.builder().embeddingStore(embeddingStore).embeddingModel(embeddingModel).maxResults(2) // Retrieve up to 2 most relevant results
                     .minScore(0.7) // Minimum relevance score to consider a result
                     .build();
 
             chatArea.append("Chatbot initialized. Type your questions!\n");
         } catch (Exception e) {
-            chatArea.append("Error initializing Chatbot: " + e.getMessage() + "\n");            chatArea.append("Please ensure you have a valid OpenAI API key.\n");
+            chatArea.append("Error initializing Chatbot: " + e.getMessage() + "\n");
+            chatArea.append("Please ensure you have a valid OpenAI API key.\n");
             e.printStackTrace();
         }
     }
@@ -114,14 +106,10 @@ public class Chatbot extends JPanel {
                 try {
                     // 1. Retrieve relevant information
                     List<dev.langchain4j.rag.content.Content> relevantSegments = retriever.retrieve(Query.from(userMessage));
-                    String context = relevantSegments.stream()
-                            .map(content -> content.textSegment().text())
-                            .collect(Collectors.joining("\n\n"));
+                    String context = relevantSegments.stream().map(content -> content.textSegment().text()).collect(Collectors.joining("\n\n"));
 
                     // 2. Construct a prompt with context
-                    String prompt = "Based on the following information, answer the question:\n\n" +
-                                    "Context:\n" + context + "\n\n" +
-                                    "Question: " + userMessage;
+                    String prompt = "Based on the following information, answer the question:\n\n" + "Context:\n" + context + "\n\n" + "Question: " + userMessage;
 
                     // 3. Generate response using Ollama with context
                     String botResponse = chatModel.generate(prompt);

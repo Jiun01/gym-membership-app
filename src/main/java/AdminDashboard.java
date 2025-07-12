@@ -3,10 +3,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-/**
- * The main dashboard for administrators.
- * It provides tools to manage users and support tickets using a tabbed interface.
- */
 public class AdminDashboard extends JFrame {
 
     private DefaultTableModel userTableModel;
@@ -100,9 +96,9 @@ public class AdminDashboard extends JFrame {
         JPasswordField passwordField = new JPasswordField();
         JTextField roleField = new JTextField();
         Object[] message = {
-            "Username:", usernameField,
-            "Password:", passwordField,
-            "Role:", roleField
+                "Username:", usernameField,
+                "Password:", passwordField,
+                "Role:", roleField
         };
 
         int option = JOptionPane.showConfirmDialog(this, message, "Add New User", JOptionPane.OK_CANCEL_OPTION);
@@ -180,7 +176,7 @@ public class AdminDashboard extends JFrame {
         String description = (String) ticketTableModel.getValueAt(selectedRow, 2);
 
         String[] statuses = {"Open", "In Progress", "Closed"};
-        String newStatus = (String) JOptionPane.showInputDialog(this, "Select new status for the ticket:", 
+        String newStatus = (String) JOptionPane.showInputDialog(this, "Select new status for the ticket:",
                 "Update Ticket Status", JOptionPane.QUESTION_MESSAGE, null, statuses, statuses[0]);
 
         if (newStatus != null) {

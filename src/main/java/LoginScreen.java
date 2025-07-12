@@ -1,11 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * The login window for the application.
- * It allows users to enter their credentials and authenticates them.
- * Based on the user's role, it opens the appropriate dashboard.
- */
 public class LoginScreen extends JFrame {
 
     public LoginScreen() {
@@ -72,6 +67,7 @@ public class LoginScreen extends JFrame {
 
     /**
      * Authenticates the user and opens the corresponding dashboard.
+     *
      * @param username The username entered by the user.
      * @param password The password entered by the user.
      */

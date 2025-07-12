@@ -1,10 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * A window for new users to register for an account.
- * It saves the new user's information to the data store.
- */
 public class RegistrationScreen extends JFrame {
 
     public RegistrationScreen() {

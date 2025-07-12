@@ -7,11 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Base64;
 
-/**
- * A utility class to handle all data persistence operations.
- * Manages reading/writing to CSV files for users, tickets, and member data.
- * Implements password hashing with a salt.
- */
+
 public class DataManager {
 
     private static final String USERS_FILE = "users.csv";
@@ -20,11 +16,6 @@ public class DataManager {
     private static final String GOALS_FILE = "goals.csv";       // For member goals
 
     // --- Password Hashing Methods ---
-
-    /**
-     * Generates a cryptographically secure salt.
-     * @return A salt as a Base64 encoded string.
-     */
     private static String getSalt() throws NoSuchAlgorithmException {
         SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
         byte[] salt = new byte[16];
@@ -32,12 +23,7 @@ public class DataManager {
         return Base64.getEncoder().encodeToString(salt);
     }
 
-    /**
-     * Hashes a password with a given salt using SHA-256.
-     * @param password The password to hash.
-     * @param salt The salt to use (Base64 encoded).
-     * @return The hashed password as a Base64 encoded string.
-     */
+
     private static String hashPassword(String password, String salt) {
         String generatedPassword = null;
         try {
@@ -52,13 +38,6 @@ public class DataManager {
     }
 
     // --- User Management ---
-
-    /**
-     * Authenticates a user by checking the provided credentials against the users file.
-     * @param username The username to check.
-     * @param password The password to check.
-     * @return The user's role if authentication is successful, otherwise null.
-     */
     public static String authenticateUser(String username, String password) {
         try (BufferedReader br = new BufferedReader(new FileReader(USERS_FILE))) {
             String line;
@@ -81,13 +60,6 @@ public class DataManager {
         return null; // Authentication failed
     }
 
-    /**
-     * Saves a new user to the users file with a salted and hashed password.
-     * @param username The new user's username.
-     * @param password The new user's password.
-     * @param role The new user's role.
-     * @return true if the user was saved successfully, false otherwise.
-     */
     public static boolean saveUser(String username, String password, String role) {
         if (isUserExists(username)) {
             return false;
@@ -192,13 +164,6 @@ public class DataManager {
 
     // --- Member Data Persistence ---
 
-    /**
-     * Saves a member's profile data. Appends to profiles.csv.
-     * @param username The user's username.
-     * @param name The user's full name.
-     * @param age The user's age.
-     * @param gender The user's gender.
-     */
     public static void saveProfile(String username, String name, String age, String gender) {
         List<String[]> allProfiles = new ArrayList<>();
         boolean profileFound = false;
@@ -234,12 +199,6 @@ public class DataManager {
         }
     }
 
-    /**
-     * Saves a member's goals data. Appends to goals.csv.
-     * @param username The user's username.
-     * @param dailyGoals An array of daily goal inputs.
-     * @param weeklyGoals An array of weekly goal inputs.
-     */
     public static void saveGoals(String username, String[] dailyGoals, String[] weeklyGoals) {
         List<String[]> allGoals = new ArrayList<>();
         boolean goalsFound = false;

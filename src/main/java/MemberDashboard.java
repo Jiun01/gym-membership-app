@@ -1,16 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * The main dashboard for members after they log in.
- * It uses a tabbed pane to provide access to all member features.
- */
 public class MemberDashboard extends JFrame {
 
-    /**
-     * Constructor for the MemberDashboard.
-     * @param username The username of the logged-in member, used for data persistence.
-     */
     public MemberDashboard(String username) {
         setTitle("Member Dashboard");
         setSize(900, 700);
