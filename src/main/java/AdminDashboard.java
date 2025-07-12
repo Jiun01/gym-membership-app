@@ -16,10 +16,10 @@ public class AdminDashboard extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // --- Tabbed Pane for Different Admin Controls ---
+        // Tabbed Pane for Different Admin Controls
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        // --- Manage Users Panel ---
+        // Manage Users Panel
         JPanel manageUsersPanel = new JPanel(new BorderLayout());
         String[] userColumns = {"Username", "Role"};
         userTableModel = new DefaultTableModel(userColumns, 0);
@@ -38,7 +38,7 @@ public class AdminDashboard extends JFrame {
 
         tabbedPane.addTab("Manage Users", manageUsersPanel);
 
-        // --- Manage Tickets Panel ---
+        // Manage Tickets Panel
         JPanel manageTicketsPanel = new JPanel(new BorderLayout());
         String[] ticketColumns = {"Email", "Subject", "Description", "Status"};
         ticketTableModel = new DefaultTableModel(ticketColumns, 0);
@@ -56,7 +56,7 @@ public class AdminDashboard extends JFrame {
         tabbedPane.addTab("Chatbot", new Chatbot());
         add(tabbedPane);
 
-        // --- Logout Button ---
+        // Logout Button
         JButton logoutButton = new JButton("Logout");
         logoutButton.addActionListener(e -> {
             dispose();
@@ -64,7 +64,7 @@ public class AdminDashboard extends JFrame {
         });
         add(logoutButton, BorderLayout.SOUTH);
 
-        // --- Action Listeners for Buttons ---
+        // Action Listeners for Buttons
         addUserButton.addActionListener(e -> addUser());
         editUserButton.addActionListener(e -> editUser());
         deleteUserButton.addActionListener(e -> deleteUser());

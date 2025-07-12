@@ -64,9 +64,9 @@ public class Chatbot extends JPanel {
 
         // Initialize openai RAG components
         try {
-            chatModel = OpenAiChatModel.builder().apiKey("API KEYS HERE").modelName("gpt-3.5-turbo").build();
+            chatModel = OpenAiChatModel.builder().apiKey("REPLACE WITH API KEY DURING RUNNING").modelName("gpt-3.5-turbo").build();
 
-            embeddingModel = OpenAiEmbeddingModel.builder().apiKey("API KEYS HERE").modelName("text-embedding-ada-002").build();
+            embeddingModel = OpenAiEmbeddingModel.builder().apiKey("REPLACE WITH API KEY DURING RUNNING").modelName("text-embedding-ada-002").build();
 
             embeddingStore = new InMemoryEmbeddingStore<>();
 
@@ -100,18 +100,15 @@ public class Chatbot extends JPanel {
         chatArea.append("You: " + userMessage + "\n");
         inputField.setText("");
 
-        // Integrate with Ollama and RAG
+        // Integrate with RAG
         if (chatModel != null && retriever != null) {
             new Thread(() -> {
                 try {
-                    // 1. Retrieve relevant information
                     List<dev.langchain4j.rag.content.Content> relevantSegments = retriever.retrieve(Query.from(userMessage));
                     String context = relevantSegments.stream().map(content -> content.textSegment().text()).collect(Collectors.joining("\n\n"));
 
-                    // 2. Construct a prompt with context
                     String prompt = "Based on the following information, answer the question:\n\n" + "Context:\n" + context + "\n\n" + "Question: " + userMessage;
 
-                    // 3. Generate response using Ollama with context
                     String botResponse = chatModel.generate(prompt);
                     SwingUtilities.invokeLater(() -> chatArea.append("Bot: " + botResponse + "\n"));
                 } catch (Exception e) {

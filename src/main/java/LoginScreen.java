@@ -12,7 +12,7 @@ public class LoginScreen extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        // --- UI Components ---
+        // UI Components
         JLabel titleLabel = new JLabel("Member & Staff Login");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
@@ -24,7 +24,7 @@ public class LoginScreen extends JFrame {
         JButton loginButton = new JButton("Login");
         JButton registerButton = new JButton("Register New Account");
 
-        // --- Layout ---
+        // Layout
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -53,7 +53,7 @@ public class LoginScreen extends JFrame {
         gbc.gridwidth = 2;
         add(buttonPanel, gbc);
 
-        // --- Action Listeners ---
+        // Action Listeners
         loginButton.addActionListener(e -> {
             String username = userField.getText();
             String password = new String(passField.getPassword());

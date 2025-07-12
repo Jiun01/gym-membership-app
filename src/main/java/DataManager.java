@@ -15,7 +15,7 @@ public class DataManager {
     private static final String PROFILES_FILE = "profiles.csv"; // For member profiles
     private static final String GOALS_FILE = "goals.csv";       // For member goals
 
-    // --- Password Hashing Methods ---
+
     private static String getSalt() throws NoSuchAlgorithmException {
         SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
         byte[] salt = new byte[16];
@@ -37,7 +37,7 @@ public class DataManager {
         return generatedPassword;
     }
 
-    // --- User Management ---
+    // User Management
     public static String authenticateUser(String username, String password) {
         try (BufferedReader br = new BufferedReader(new FileReader(USERS_FILE))) {
             String line;
@@ -162,7 +162,7 @@ public class DataManager {
         }
     }
 
-    // --- Member Data Persistence ---
+    // Member Data Persistence
 
     public static void saveProfile(String username, String name, String age, String gender) {
         List<String[]> allProfiles = new ArrayList<>();
@@ -283,7 +283,7 @@ public class DataManager {
         return null; // Profile not found
     }
 
-    // --- Other Methods (isUserExists, saveTicket, loadAllUsers, loadAllTickets) ---
+    // Other Methods (isUserExists, saveTicket, loadAllUsers, loadAllTickets)
     // (These methods remain largely the same, but loadAllUsers needs to account for the new format)
 
     private static boolean isUserExists(String username) {

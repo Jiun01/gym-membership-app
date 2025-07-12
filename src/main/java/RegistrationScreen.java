@@ -13,7 +13,7 @@ public class RegistrationScreen extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        // --- UI Components ---
+        // UI Components
         JLabel userLabel = new JLabel("Username:");
         JTextField userField = new JTextField(15);
         JLabel passLabel = new JLabel("Password:");
@@ -23,7 +23,7 @@ public class RegistrationScreen extends JFrame {
         JComboBox<String> roleComboBox = new JComboBox<>(roles);
         JButton registerButton = new JButton("Register");
 
-        // --- Layout ---
+        // Layout
         gbc.gridx = 0;
         gbc.gridy = 0;
         add(userLabel, gbc);
@@ -50,7 +50,7 @@ public class RegistrationScreen extends JFrame {
         gbc.gridwidth = 2;
         add(registerButton, gbc);
 
-        // --- Action Listener ---
+        // Action Listener
         registerButton.addActionListener(e -> {
             String username = userField.getText();
             String password = new String(passField.getPassword());
