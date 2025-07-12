@@ -8,10 +8,10 @@ import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.segment.TextSegment;
-import dev.langchain4j.model.chat.ChatModel;
+import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
-import dev.langchain4j.model.ollama.OllamaChatModel;
-import dev.langchain4j.model.ollama.OllamaEmbeddingModel;
+import dev.langchain4j.model.openai.OpenAiChatModel;
+import dev.langchain4j.model.openai.OpenAiEmbeddingModel;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.store.embedding.EmbeddingStore;
@@ -27,7 +27,7 @@ public class Chatbot extends JPanel {
 
     private JTextArea chatArea;
     private JTextField inputField;
-    private ChatModel ollamaModel;
+    private ChatLanguageModel chatModel;
     private EmbeddingModel embeddingModel;
     private EmbeddingStore<TextSegment> embeddingStore;
     private ContentRetriever retriever;
@@ -64,14 +64,14 @@ public class Chatbot extends JPanel {
 
         // Initialize Ollama and RAG components
         try {
-            ollamaModel = OllamaChatModel.builder()
-                    .baseUrl("http://localhost:11434/") // Adjust if your Ollama instance is elsewhere
-                    .modelName("llama2") // Or any other model you have pulled, e.g., "mistral"
+            chatModel = OpenAiChatModel.builder()
+                    .apiKey("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") // Replace with your actual OpenAI API key
+                    .modelName("gpt-3.5-turbo")
                     .build();
 
-            embeddingModel = OllamaEmbeddingModel.builder()
-                    .baseUrl("http://localhost:11434/")
-                    .modelName("nomic-embed-text") // Ensure you have this model pulled: ollama pull nomic-embed-text
+            embeddingModel = OpenAiEmbeddingModel.builder()
+                    .apiKey("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") // Replace with your actual OpenAI API key
+                    .modelName("text-embedding-ada-002")
                     .build();
 
             embeddingStore = new InMemoryEmbeddingStore<>();
@@ -94,8 +94,7 @@ public class Chatbot extends JPanel {
 
             chatArea.append("Chatbot initialized. Type your questions!\n");
         } catch (Exception e) {
-            chatArea.append("Error initializing Chatbot: " + e.getMessage() + "\n");
-            chatArea.append("Please ensure Ollama is running, and 'llama2' and 'nomic-embed-text' models are available.\n");
+            chatArea.append("Error initializing Chatbot: " + e.getMessage() + "\n");            chatArea.append("Please ensure you have a valid OpenAI API key.\n");
             e.printStackTrace();
         }
     }
@@ -110,7 +109,7 @@ public class Chatbot extends JPanel {
         inputField.setText("");
 
         // Integrate with Ollama and RAG
-        if (ollamaModel != null && retriever != null) {
+        if (chatModel != null && retriever != null) {
             new Thread(() -> {
                 try {
                     // 1. Retrieve relevant information
@@ -125,7 +124,7 @@ public class Chatbot extends JPanel {
                                     "Question: " + userMessage;
 
                     // 3. Generate response using Ollama with context
-                    String botResponse = ollamaModel.chat(prompt);
+                    String botResponse = chatModel.generate(prompt);
                     SwingUtilities.invokeLater(() -> chatArea.append("Bot: " + botResponse + "\n"));
                 } catch (Exception e) {
                     SwingUtilities.invokeLater(() -> chatArea.append("Bot Error: " + e.getMessage() + "\n"));
@@ -133,7 +132,7 @@ public class Chatbot extends JPanel {
                 }
             }).start();
         } else {
-            chatArea.append("Bot: (Ollama or RAG components not initialized. Please check dependencies and configuration.)\n");
+            chatArea.append("Bot: (RAG components not initialized. Please contact administrator.)\n");
         }
     }
 
