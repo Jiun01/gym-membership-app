@@ -65,12 +65,12 @@ public class Chatbot extends JPanel {
         // Initialize Ollama and RAG components
         try {
             chatModel = OpenAiChatModel.builder()
-                    .apiKey("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") // Replace with your actual OpenAI API key
+                    .apiKey("API KEYS HERE") // Replace with your actual OpenAI API key
                     .modelName("gpt-3.5-turbo")
                     .build();
 
             embeddingModel = OpenAiEmbeddingModel.builder()
-                    .apiKey("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") // Replace with your actual OpenAI API key
+                    .apiKey("API KEYS HERE") // Replace with your actual OpenAI API key
                     .modelName("text-embedding-ada-002")
                     .build();
 
